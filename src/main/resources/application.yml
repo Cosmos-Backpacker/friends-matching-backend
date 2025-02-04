@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: friendsMatching
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1111
+    url: jdbc:mysql://localhost:3306/userCenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false
+  session:
+
+    redis:
+      repository-type: default
+    timeout: 604800s      #设置redis中session的过期时间
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      database: 0
+
+
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: SESSION               # Cookie 名称
+        max-age: 604800             # Cookie 过期时间（秒），7 天
+        http-only: true             # 仅 HTTP 访问
+        secure: false               # 如果使用 HTTPS，设置为 true
+        same-site: lax              # SameSite 属性
+
+
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false    # 开启驼峰命名
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.cosmos.friendsMatching.pojo   # 实体扫描，多个package用逗号或者分号分隔
+  global-config:
+    db-config: #配置查找的时候的逻辑删除，如果存在逻辑被删除的信息，就默认不查询
+      logic-delete-field: deleted # 全局逻辑删除字段名
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
+
+
+
