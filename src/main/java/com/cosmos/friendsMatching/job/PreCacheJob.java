@@ -37,7 +37,6 @@ public class PreCacheJob {
     //重点用户列表,只需要给一些重点用户添加缓存
     List<Long> majorUser = List.of(1L);
 
-
     @Scheduled(cron = "0 0 0 ? * ?  ")//每日0点执行这个任务
     public void preCacheJob() {
         log.info("定时任务开始执行");
@@ -57,8 +56,6 @@ public class PreCacheJob {
                 //存储通用缓存
 
                 valueOperations.set("cosmos:user:recommend:usual", userPage);
-
-
                 //对于一些特殊用户单独设置缓存
                 for (Long l : majorUser) {
                     String redisKey = String.format("friendsMatch:preCache:majorUser:%s", l);
@@ -69,7 +66,6 @@ public class PreCacheJob {
                     } catch (Exception e) {
                         log.error("redis set key error", e);
                     }
-
                 }
 
             } else {

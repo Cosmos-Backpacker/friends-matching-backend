@@ -24,12 +24,9 @@ public class RedissonConfig {
     @Bean
     public RedissonClient redissonClient() {
 
-        StringBuilder sb = new StringBuilder();
-
         Config config = new Config();
 
         String redisAddress = "redis://localhost:6379";
-
         //设置Redis的配置,使用1号数据库
         config.useSingleServer().setAddress(redisAddress).setDatabase(1);
 

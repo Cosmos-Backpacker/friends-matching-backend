@@ -7,7 +7,6 @@ spring:
     password: 1111
     url: jdbc:mysql://localhost:3306/userCenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false
   session:
-
     redis:
       repository-type: default
     timeout: 604800s      #设置redis中session的过期时间
@@ -16,7 +15,6 @@ spring:
       port: 6379
       host: localhost
       database: 0
-
 
 server:
   port: 8080
@@ -28,6 +26,7 @@ server:
         http-only: true             # 仅 HTTP 访问
         secure: false               # 如果使用 HTTPS，设置为 true
         same-site: lax              # SameSite 属性
+  address: 0.0.0.0
 
 
 

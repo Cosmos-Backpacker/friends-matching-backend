@@ -3,8 +3,6 @@ spring:
     name: friendsMatching
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
+    username: userCenter
     password: 1111
-    url: jdbc:mysql://localhost:3306/userCenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false
-    #假装这里是生产环境的配置
-
+    url: jdbc:mysql://localhost/userCenter?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false
