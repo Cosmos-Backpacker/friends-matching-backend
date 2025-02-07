@@ -1,17 +1,20 @@
-# Docker 镜像构建
-# @author <a href="https://github.com/liyupi">程序员鱼皮</a>
-# @from <a href="https://yupi.icu">编程导航知识星球</a>
-FROM maven:4.0-jdk-17-alpine as builder
+# 第一阶段：可以省略，因为不再需要在容器内进行 Maven 打包
+# FROM maven:3.8.4 AS build
+# WORKDIR /app
+# COPY pom.xml .
+# COPY src ./src
+# RUN mvn package -DskipTests
 
-# Copy local code to the container image.
+# 直接使用 OpenJDK 17 作为运行时环境
+FROM openjdk:17-jdk-slim
+
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
 
-# Build a release artifact.
-RUN mvn package -DskipTests
+# 直接从本地复制打好的 JAR 文件到容器中
+COPY friendsMatching-0.0.1-SNAPSHOT.jar app.jar
+
+# 设置启动命令
+#ENTRYPOINT ["java", "-jar",  "app.jar","--spring.profiles.active=prod"]
 
 # Run the web service on container startup.
-CMD ["java","-jar","/app/target/friendsMatching-0.0.1-SNAPSHOT.jar","--spring.profiles.active=prod"]
-
-# [编程学习交流圈](https://www.code-nav.cn/) 快速入门编程不走弯路！30+ 原创学习路线和专栏、500+ 编程学习指南、1000+ 编程精华文章、20T+ 编程资源汇总
+CMD ["java","-jar","app.jar","--spring.profiles.active=prod"]
