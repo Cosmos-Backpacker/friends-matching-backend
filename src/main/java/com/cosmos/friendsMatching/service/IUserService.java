@@ -118,12 +118,12 @@ public interface IUserService extends IService<User> {
     public Page<User> recommendUser(Long pageNum, Long pageSize, HttpServletRequest request);
 
     /**
-     *  根据id查询用户
-     * @param userId    用户id
-     * @return  用户信息
+     * 根据id查询用户
+     *
+     * @param userId 用户id
+     * @return 用户信息
      */
     public User selectUserById(Long userId);
-
 
 
 }

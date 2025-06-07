@@ -52,9 +52,7 @@ public class PreCacheJob {
 
                 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 userPage = userService.page(new Page<>(1, 10), queryWrapper);
-
                 //存储通用缓存
-
                 valueOperations.set("cosmos:user:recommend:usual", userPage);
                 //对于一些特殊用户单独设置缓存
                 for (Long l : majorUser) {

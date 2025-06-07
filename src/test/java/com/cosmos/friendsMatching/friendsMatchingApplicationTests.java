@@ -36,7 +36,7 @@ class friendsMatchingApplicationTests {
 
     @Test
     public void userRegister() {
-        Result result = userService.userRegister("99997766", "12345678", "12345678");
+        Result result = userService.userRegister("ccjj12345", "12345678", "12345678");
         Assertions.assertEquals("恭喜你注册成功！！", result.getMsg());
     }
 

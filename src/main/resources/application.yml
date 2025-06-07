@@ -14,7 +14,6 @@ spring:
     redis:
       port: 6379
       host: localhost
-      password: 1111
       database: 0
 
 server:
@@ -26,7 +25,7 @@ server:
         max-age: 604800             # Cookie 过期时间（秒），7 天
         http-only: true             # 仅 HTTP 访问
         secure: false               # 如果使用 HTTPS，设置为 true
-        same-site: lax              # SameSite 属性
+        same-site: none              # SameSite 属性
   address: 0.0.0.0                  # 监听所有 IP 地址
 
 
