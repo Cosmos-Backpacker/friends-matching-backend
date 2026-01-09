@@ -1,23 +1,21 @@
 package com.cosmos.friendsMatching.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cosmos.friendsMatching.common.ErrorCode;
 import com.cosmos.friendsMatching.exception.BusinessException;
+import com.cosmos.friendsMatching.mapper.UserTeamMapper;
 import com.cosmos.friendsMatching.pojo.Team;
 import com.cosmos.friendsMatching.pojo.User;
 import com.cosmos.friendsMatching.pojo.UserTeam;
-import com.cosmos.friendsMatching.mapper.UserTeamMapper;
 import com.cosmos.friendsMatching.service.ITeamService;
 import com.cosmos.friendsMatching.service.IUserService;
 import com.cosmos.friendsMatching.service.IUserTeamService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cosmos.friendsMatching.utils.MySessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,8 +47,8 @@ public class UserTeamServiceImpl extends ServiceImpl<UserTeamMapper, UserTeam> i
 
         if (StringUtils.isBlank(teamName)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数不能为空");
-
         }
+
         long userId = mySessionUtil.getUserInfo(request).getId();
         LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Team::getTeamName, teamName);

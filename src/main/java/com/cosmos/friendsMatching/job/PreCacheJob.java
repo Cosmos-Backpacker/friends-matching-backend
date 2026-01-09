@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cosmos.friendsMatching.pojo.User;
 import com.cosmos.friendsMatching.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +26,7 @@ public class PreCacheJob {
 
     @Autowired
     @Qualifier("redisTemplate")
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private RedissonClient redissonClient;
@@ -46,9 +44,10 @@ public class PreCacheJob {
         //等待时间0（指的是多个线程同时抢占，如果没有抢到多长时间之后再来，0代表不来了），释放时间（锁的过期时间）
         try {
             System.out.println("doLock" + Thread.currentThread().getId());
-            if (lock.tryLock(0, -1, TimeUnit.MILLISECONDS)) {    //抢到锁了返回true否则返回false
-                ValueOperations valueOperations = redisTemplate.opsForValue();
-                Page<User> userPage = new Page<>();
+            if (lock.tryLock(0, TimeUnit.MILLISECONDS)) {    //抢到锁了返回true否则返回false，不设置leaseTime会自动启用看门狗机制
+                    ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+                Page<User> userPage;
+
 
                 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
                 userPage = userService.page(new Page<>(1, 10), queryWrapper);
@@ -73,7 +72,7 @@ public class PreCacheJob {
             throw new RuntimeException(e);
         } finally {
             //放在这里防止中间出现了异常导致锁没有释放
-            System.out.println("onLock" + Thread.currentThread().getId());
+            System.out.println("unLock" + Thread.currentThread().getId());
             if (lock.isHeldByCurrentThread()) { //判断这个锁是不是当前线程上的锁，为了解决只能释放自己上的锁
                 //执行完成释放锁
                 lock.unlock();
